@@ -41,6 +41,7 @@ R = img_data_rgb.T[0].T
 G = img_data_rgb.T[1].T
 B = img_data_rgb.T[2].T
 
+print("Loading patches ... ")
 for x in range(0, img_data.shape[0], 5):
     for y in range(0, img_data.shape[0], 5):
         # GB PATCH
@@ -80,8 +81,7 @@ for x in range(0, img_data.shape[0], 5):
                 input_RB_2 = np.append(input_RB_2, col, axis = 0)
                 RB_2 = np.append(RB_2, [[r, b]], axis = 0)
         # RG PATCH
-        # elif(x == img_data.shape[0]-5):
-        else:
+        if(x == img_data.shape[0]-5):
             block = img_data[x:x+5, y:y+5]
             col = mat_to_col(block)
             r = R[x+2][y+2]
@@ -92,6 +92,7 @@ for x in range(0, img_data.shape[0], 5):
             else:
                 input_RG = np.append(input_RG, col, axis = 0)
                 RG = np.append(RG, [[r, g]], axis = 0)
+        # print(x, img_data.shape[0])
 
 
 
@@ -99,22 +100,31 @@ for x in range(0, img_data.shape[0], 5):
 f = open("weights.txt", "a")
 ## TYPE A GB
 # print(GB.T, GB)
+print("Generating weights ... ")
 G_coeff, B_coeff = gen_weights(input_GB, GB.T)
 f.write(np.array2string(G_coeff))
+f.write("\n")
 f.write(np.array2string(B_coeff))
+f.write("\n")
 ## TYPE B RB
 R_coeff, B_coeff = gen_weights(input_RB, RB.T)
 f.write(np.array2string(R_coeff))
+f.write("\n")
 f.write(np.array2string(B_coeff))
+f.write("\n")
 ## TYPE C RB
 R_coeff, B_coeff = gen_weights(input_RB_2, RB_2.T)
 f.write(np.array2string(R_coeff))
+f.write("\n")
 f.write(np.array2string(B_coeff))
+f.write("\n")
 # TYPE D RG
-print(input_RG, RG)
 R_coeff, G_coeff = gen_weights(input_RG, RG.T)
 f.write(np.array2string(R_coeff))
+f.write("\n")
 f.write(np.array2string(G_coeff))
+f.write("\n")
 
+print("weights in weights.txt")
 f.close()
 

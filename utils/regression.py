@@ -17,10 +17,9 @@ def mat_to_col(inp):
     return out
 
 def gen_weights(X, Y):
-    print('Input X dimensions: {} Output Y dimensions: {}'.format(X.shape,Y.shape))
     x_inv = inv(matmul(X.T, X))
     x_plus = matmul(x_inv, X.T)
-    
+
     A = matmul(x_plus, Y[0])
     B = matmul(x_plus, Y[1])
     return A,B
