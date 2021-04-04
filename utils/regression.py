@@ -12,6 +12,8 @@ def mat_to_col(inp):
         for y in range(mat_Y):
             out[0][inc] = inp[x][y]
             inc+=1
+    # for x in range(mat_X):
+    #     out[0]
 
     # print(out)
     return out

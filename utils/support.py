@@ -24,28 +24,7 @@ def mosaic(rgb_arr):
             mos[i][j] = b[i][j]
     return mos
 
-def lin_interp(xi, yi, B, F):
-    inp = np.array([xi*yi, xi, yi, 1])
-    # print(B)
-    Binv = inv(B)
-    coef = matmul(Binv, F)
-    prod = matmul(coef,inp)
-    # print(prod, F)
-    # return x * Binv * F * Binv.T * y
-    return prod
 
-# cubic 
-
-def cubic_interp(xi, yi, B, F):
-    x = np.array([xi**3, xi**2, xi, 1])
-    y = np.array([yi**3, yi**2, yi, 1])
-    Binv = inv(B)
-    prod = matmul(Binv, F)
-    prod2 = matmul(prod, Binv.T)
-    prod3 = matmul(x, prod2)
-    prod4 = matmul(prod3, y)
-    # return x * Binv * F * Binv.T * y
-    return matmul(prod3, y)
 
 def get_samples(blk, dim, color="r", mode=None):
     f = np.zeros(dim)
@@ -79,23 +58,6 @@ def get_samples(blk, dim, color="r", mode=None):
         f=s
     return f
 
-def generate_B(s,dim, mode="r"):
-    B = np.zeros(dim)
-    init=0
-    if(mode == "g"):
-        k=0
-        for i in range(s.shape[0]-1):
-            for j in range(s.shape[1]-1):
-                B[k] = [ i*j, i, j, 1]
-                k+=1
-        return B
-    if(mode == "b"):
-        init = 1
-    j=0
-    for i in range(init, s.shape[0], 2):
-        B[j] = [i**3, i**2, i, 1]
-        j+=1
-    return B
 
 def fill_block(blk, B, F):
     for i in range(blk.shape[0]):
@@ -134,3 +96,38 @@ def error(inp, outp):
             sumB += (b[i][j] - bGen[i][j])**2
     
     return (sumR+sumG+sumB)/(Nsamples*3)
+
+
+def pad_image(img, n):
+    width = img.shape[1]
+    height = img.shape[0]
+    new_width = width + 2*n
+    new_height = height + 2*n
+    new_padded = np.zeros((height+2*n, width+2*n))
+    new_padded[n:height+n, n:width+n] = img
+
+    # top corner
+    new_padded[0:n,0:n] = img[n][n]
+    # right corner
+    new_padded[0:n,new_width-n-1:new_width] = img[n][width-1]
+    # bottom corner
+    new_padded[new_height-n-1:new_height, 0:n] = img[height-1][n]
+    # bottom right corner
+    new_padded[new_height-n-1:new_height, new_width-n-1:new_width] = img[height-1][width-1]
+    
+    # pad top and bottom edges
+    for y in range(n, width+n, n):
+        # top edge
+        new_padded[0:n, y: y+n] = img[n][y-n-1]
+        # bottom edge
+        new_padded[new_height-n-1:new_height, y: y+n] = img[height-1][y-n-1]
+
+    # pad top and bottom edges
+    for x in range(n, height+n, n):
+        # left edge
+        new_padded[x:x+n, 0:n] = img[x-n-1][n]
+        # right edge
+        new_padded[n:x+n, new_width-n-1: new_width] = img[x-n-1][width-1]
+
+    return new_padded
+
