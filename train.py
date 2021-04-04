@@ -22,7 +22,7 @@ img = Image.open(input_filename)
 img_data_rgb = np.asarray(img)
 
 ## get mosaic of image
-img_data = mosaic(img_data_rgb.T)
+img_data = mosaic(img_data_rgb.)
 
 ### PATCH TYPES GB, RB, RB_2, RG
 
