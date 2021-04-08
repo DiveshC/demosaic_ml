@@ -40,9 +40,11 @@ output_name = sys.argv[2]
 ```
 
 ### File structure
-There are 2 main files, the demosaic.py and a utils.py. Heres a quick breakdown of the purpose of each:
+There are 2 main files, the demosaic.py and a train.py. There is also a utils directory containning custom helper functions. Heres a quick breakdown of the purpose of each:
 - demosaic.py for the interpolation of data and generating output rgb image
-- utils.py contains helper functions for the demosaicing 
+- train.py loads reference image and preforms Least squares algorithm to generate coefficients
+- utils/regression.py has some helper functions for generating coefs and also loading patches
+- utils/support.py some more helper functions for basic operations
 
 The utils functions are imported in demosaic.py.
 
