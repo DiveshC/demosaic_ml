@@ -3,7 +3,6 @@ from numpy.linalg import inv
 from numpy import matmul
 import sys
 
-# linear interp
 def mosaic(rgb_arr):
     mos = np.zeros(rgb_arr[0].T.shape)
     r = rgb_arr[0].T

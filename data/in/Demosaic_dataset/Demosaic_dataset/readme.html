@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sindresorhus/github-markdown-css/github-markdown.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath/css/texmath.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/default.min.css">
+
+  <style>
+    body {
+      box-sizing: border-box;
+      min-width: 300px;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it-texmath/texmath.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const md = markdownit({
+            highlight: function (str, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return '<pre class="hljs"><code>' +
+                            hljs.highlight(lang, str, true).value +
+                            '</code></pre>';
+                    } catch (__) {}
+                }
+                return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+            }
+        });
+        md.use(texmath.use(katex));
+        var elements = document.body.getElementsByTagName("pre");
+        Array.prototype.slice.call(elements).forEach(pre => {
+            if (!pre.lang.match(/markdown/i)) {
+                return -1;
+            }
+            var node = document.createElement("article");
+            node.setAttribute("class", "markdown-body");
+            node.innerHTML = md.render(pre.textContent);
+            ["p", "li"].forEach(tag => {
+                var elements = node.getElementsByTagName(tag);
+                Array.prototype.slice.call(elements).forEach(element => {
+                    var text = element.innerHTML;
+                    text = text.replace(/([^\x00-\x7f])\n/g, "$1");
+                    text = text.replace(/\n([^\x00-\x7f])/g, "$1");
+                    element.innerHTML = text;
+                });
+            });
+            pre.parentNode.replaceChild(node, pre);
+        });
+    });
+  </script>
+</head>
+<body>
+  <pre lang="markdown">
+# Demosaicing Dataset Readme
+
+The input Bayer pattern mosaic images can be found in `input` folder;
+the corresponding reconstructed images by the naive demosaicing method
+and the Matlab builtin `demosaic(...)` function are in `output`
+folder.  In `rgb` folder are the ground truth RGB images.
+
+Please note that the mosaic images are sampled using the `rggb` Bayer
+pattern, meaning the upper-left corner of each image is a red pixel as
+follows.
+```
+---------------------------------
+|  Red  | Green |  Red  | Green |
+|-------|-------|-------|-------|
+| Green | Blue  | Green | Blue  |
+|-------|-------|-------|-------|
+|  Red  | Green |  Red  | Green |
+|-------|-------|-------|-------|
+| Green | Blue  | Green | Blue  |
+---------------------------------
+```
+
+The following table lists the mean square error of the results of the
+naive method and the Matlab builtin method.
+
+|          Image |   Naive | Matlab |
+| -------------- | ------- | ------ |
+|      Lenna.png |  43.690 | 19.511 |
+|    kodim05.png | 179.890 | 60.222 |
+|    kodim07.png |  63.582 | 22.946 |
+|    kodim21.png |  93.728 | 34.297 |
+|    kodim23.png |  38.505 | 17.609 |
+|       lion.png |  56.641 | 17.322 |
+|       tree.png | 187.485 | 78.496 |
+  </pre>
+</body>
+</html>
