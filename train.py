@@ -10,12 +10,12 @@ import time
 import multiprocessing
 
 # using command terminal arguments
-input_filename = sys.argv[1]
+# input_filename = sys.argv[1]
 # input_filename = 'data/in/{}'.format(input_filename)
 # output_name = sys.argv[2]
 # using hardcoded file path
 # NOTE: if the commandline argument is failing just uncomment this and replace with the file path desired
-# input_filename = "data/in/harden.jpg"
+input_filename = "data/in/tree.png"
 # output_name = "data/out/raptors.png"
 
 
@@ -35,21 +35,25 @@ R = img_data_rgb.T[0].T
 G = img_data_rgb.T[1].T
 B = img_data_rgb.T[2].T
 
-pad = 2
+# 7x7 for example
+patch_size = 9
+
+pad = int(patch_size/2)
 img_padded = pad_image(img_data, pad)
 
 start = time.time()
+
 
 # inorder to optimize the pulling of patches we split the image to 4 corners
 # and then extracts all the patches from each corner and append them into the final training arrays
 print("Loading patches ... ")
 # top corners
-corner_l_t = patchify(img_padded, R, G, B, int(img_height/2), int(img_width/2))
-corner_r_t = patchify(img_padded, R, G, B, int(img_height/2), int(img_width), 0, int(img_width/2))  
+corner_l_t = patchify(img_padded, R, G, B, patch_size, int(img_height/2), int(img_width/2))
+corner_r_t = patchify(img_padded, R, G, B, patch_size, int(img_height/2), int(img_width), 0, int(img_width/2))  
 
 # bottom corners
-corner_l_b = patchify(img_padded, R, G, B, int(img_height), int(img_width/2), int(img_height/2))
-corner_r_b = patchify(img_padded, R, G, B, int(img_height), int(img_width), int(img_height/2), int(img_width/2))    
+corner_l_b = patchify(img_padded, R, G, B, patch_size, int(img_height), int(img_width/2), int(img_height/2))
+corner_r_b = patchify(img_padded, R, G, B, patch_size, int(img_height), int(img_width), int(img_height/2), int(img_width/2))    
 
 # append quarters
 top = append_img_slices(corner_l_t, corner_r_t)

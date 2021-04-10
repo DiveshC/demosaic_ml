@@ -76,6 +76,14 @@ def fill_missing(blk,coord, desired_dim, replace):
     des[coord[0]:coord[1], coord[2]:coord[3]] = blk[coord[0]:coord[1], coord[2]:coord[3]]
     return des
 
+def bound(num):
+    if(num>255):
+        return 255
+    elif(num<0):
+        return 0
+    else:
+        return num
+
 def error(inp, outp):
     ref = inp.T
     r = ref[0]

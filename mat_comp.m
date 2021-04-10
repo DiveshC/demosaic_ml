@@ -1,6 +1,6 @@
-ref = imread('data/in/tree.png');
+ref = imread('data/in/raptors.jpg');
 
-mosaiced = imread('data/in/bayer/tree.png');
+mosaiced = imread('data/in/raptors.jpg');
 demosaiced = demosaic(mosaiced,'rggb');
 imshow(mosaiced);
 imshow(demosaiced);

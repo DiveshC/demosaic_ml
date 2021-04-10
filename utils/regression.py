@@ -27,8 +27,10 @@ def gen_weights(X, Y):
     return A,B
 
 
-def patchify(img, R, G, B, stopX, stopY, startX=0, startY=0, pad = 2):
+def patchify(img, R, G, B, patch_dim, stopX, stopY, startX=0, startY=0):
     # actual RGB values of training image store in these arrays
+    n = int(patch_dim/2)
+    pad = n
     GB = np.array([[]])
     RB = np.array([[]])
     RB_2 = np.array([[]])
@@ -42,8 +44,7 @@ def patchify(img, R, G, B, stopX, stopY, startX=0, startY=0, pad = 2):
     input_RG = np.array([[]])
     for x in range(startX, stopX):
         for y in range(startY, stopY):
-            # block = img_padded[(x+pad-2):(x+pad+3),(y+pad-2):(y+pad+3)]
-            block = img[(x+pad-2):(x+pad+3),(y+pad-2):(y+pad+3)]
+            block = img[(x+pad-n):(x+pad+n+1),(y+pad-n):(y+pad+n+1)]
             col = np.array([block.flatten()])
             # pull block and convert to column vector
             # GB PATCH (A)
