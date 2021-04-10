@@ -10,13 +10,11 @@ import time
 import multiprocessing
 
 # using command terminal arguments
-# input_filename = sys.argv[1]
-# input_filename = 'data/in/{}'.format(input_filename)
-# output_name = sys.argv[2]
+input_filename = sys.argv[1]
 # using hardcoded file path
 # NOTE: if the commandline argument is failing just uncomment this and replace with the file path desired
-input_filename = "data/in/tree.png"
-# output_name = "data/out/raptors.png"
+# input_filename = "data/in/tree.png"
+
 
 
 

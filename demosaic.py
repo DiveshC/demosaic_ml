@@ -66,23 +66,13 @@ def demosaic(input_filename, output_name, patch_size=5):
 
 def main():
     # using command terminal arguments
-    # input_filename = sys.argv[1]
-    # output_name = sys.argv[2]
+    input_filename = sys.argv[1]
+    output_name = sys.argv[2]
     # using hardcoded file path
     # NOTE: if the commandline argument is failing just uncomment this and replace with the file path desired
-    
-    inp = 'Lenna.png'
-    # inp = 'kodim05.png'
-    # inp = 'kodim07.png'
-    # inp = 'kodim21.png'
-    # inp = 'lion.png'
-    # inp = 'tree.png'
-    # inp = 'kodim23.png'
-    # inp = 'raptors.jpg'
+    # input_filename = "data/in/{}"
+    # output_name = "data/out/{}"
 
-
-    input_filename = "data/in/{}".format(inp)
-    output_name = "data/out/{}".format(inp)
     # patch size 5 == 5x5 for example
     patch_size = 9
     demosaic(input_filename, output_name, patch_size)
