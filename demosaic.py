@@ -16,9 +16,10 @@ def demosaic(input_filename, output_name, patch_size=5):
     print("Opening {}".format(input_filename))
     img = Image.open(input_filename)
     img_data_rgb = np.asarray(img)
-
+    
     ## get mosaic of image
-    img_data = mosaic(img_data_rgb.T)
+    # img_data = mosaic(img_data_rgb)
+    img_data = img_data_rgb
 
     # color channels
     r_data = get_samples(img_data, img_data.shape,"r", "data")
@@ -61,7 +62,7 @@ def demosaic(input_filename, output_name, patch_size=5):
     c_img.save(output_name)
     print("Saved {}".format(output_name))
 
-    print(error(img_data_rgb, final_arr))
+    print("error: {}".format(error(img_data_rgb, final_arr)))
 
 
 def main():
